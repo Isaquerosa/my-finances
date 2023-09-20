@@ -7,7 +7,7 @@ export default {
     GRAY_200: '#C4C4CC',
     GRAY_300: '#8D8D99',
     GRAY_400: '#7b8389',
-    GRAY_500: '#616161',
+    GRAY_500: '#7C7C8A',
     GRAY_600: '#323238',
     GRAY_700: '#29292E',
     GRAY_800: '#202024',
@@ -15,10 +15,11 @@ export default {
     BLUE_LIGHT: '#66bce8',
     BLUE_DARK: '#255fa7',
     ERROR: '#e35b5c',
+    RED: '#e52e4d',
   },
   FONT_FAMILY: {
-    REGULAR: 'Poppins_500Medium',
-    BOLD: 'Poppins_700Bold',
+    REGULAR: 'Roboto_400Regular',
+    BOLD: 'Roboto_700Bold',
   },
   FONT_SIZE: {
     XS: 12,

@@ -1,23 +1,30 @@
+/* eslint-disable camelcase */
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View } from 'react-native'
+import { ThemeProvider } from 'styled-components'
+
+import {
+  useFonts,
+  Roboto_400Regular,
+  Roboto_700Bold,
+} from '@expo-google-fonts/roboto'
+
+import { Routes } from './src/routes'
+import { Loading } from './src/components/Loading'
+import theme from './src/theme'
+import { AuthContextProvider } from './src/contexts/auth-context'
+import { CalendarModalProvider } from './src/contexts/CalendarModal-context'
 
 export default function App() {
+  const [fontsLoader] = useFonts({ Roboto_400Regular, Roboto_700Bold })
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Minhas Finanças</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider theme={theme}>
+      <StatusBar style="light" backgroundColor="transparent" translucent />
+      <AuthContextProvider>
+        <CalendarModalProvider>
+          {fontsLoader ? <Routes /> : <Loading />}
+        </CalendarModalProvider>
+      </AuthContextProvider>
+    </ThemeProvider>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#323238',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    color: '#fff',
-  },
-})
