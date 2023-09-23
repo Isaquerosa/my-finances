@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export function formatBrlCoin(value?: string) {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -30,4 +32,13 @@ export function maskDate(value: any, format = { Y: 0, M: 1, D: 2 }) {
 
   const newDate = date.split('-')
   return `${newDate[format.D]}/${newDate[format.M]}/${newDate[format.Y]}`
+}
+
+export function maskNewDate(value: string) {
+  return moment(value).locale('pt-br').format('DD/MM/YYYY')
+}
+
+export function maskDateIso(date: string) {
+  if (!date) return undefined
+  return new Date(date)?.toISOString()?.substring(0, 10)
 }

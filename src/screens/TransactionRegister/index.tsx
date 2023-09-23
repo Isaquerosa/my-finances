@@ -20,7 +20,7 @@ export function TransactionRegister() {
   const [isLoading, setIsLoading] = useState(false)
   const [isOpenCalendarModal, setIsOpenCalendarModal] = useState(false)
   const { user } = useAuth()
-  const { selectedDate } = useCalendarModal()
+  const { selectedDate, setSelectedDate } = useCalendarModal()
 
   function handleCloseCalendarModal() {
     setIsOpenCalendarModal(false)
@@ -41,6 +41,7 @@ export function TransactionRegister() {
         Alert.alert('Transação cadastrada com sucesso')
         setDescription('')
         setValue('')
+        setSelectedDate('')
       })
       .catch((error) => console.log(error))
       .finally(() => setIsLoading(false))
@@ -112,6 +113,7 @@ export function TransactionRegister() {
               <Text>Receita</Text>
             </TouchableOpacity>
           </ViewFlex>
+
           <ViewFlex mt={42} w="100%" items="center">
             <TouchableOpacity
               onPress={() => setIsOpenCalendarModal(true)}

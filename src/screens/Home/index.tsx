@@ -170,7 +170,7 @@ export function Home() {
             borderRadius: 6,
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#323238',
+            backgroundColor: '#00875F',
           }}
         >
           <Text style={{ color: '#fff' }}>
@@ -200,7 +200,7 @@ export function Home() {
             borderRadius: 6,
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#00875F',
+            backgroundColor: '#323238',
           }}
         >
           <Text style={{ color: '#fff' }}>

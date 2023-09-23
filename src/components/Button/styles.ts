@@ -21,7 +21,7 @@ export const Container = styled(TouchableOpacity)<ButtonProps>`
   min-height: ${(props) => (props.size ? BUTTON_SIZES[props.size] : 32)}px;
   max-height: ${(props) => (props.size ? BUTTON_SIZES[props.size] : 32)}px;
   background-color: ${({ theme, type }) =>
-    type === 'PRIMARY' ? theme.COLORS.BLUE_LIGHT : theme.COLORS.BRAND_LIGHT};
+    type === 'PRIMARY' ? theme.COLORS.BLUE_DARK : theme.COLORS.BRAND_LIGHT};
   border-radius: 6px;
   align-items: center;
   justify-content: center;
