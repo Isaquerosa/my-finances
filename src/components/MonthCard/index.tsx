@@ -12,7 +12,7 @@ export function MonthCard({ isActive, name, ...props }: MonthCardProps) {
     <ViewFlex flexDirection="row">
       <TouchableOpacity
         style={{
-          width: 80,
+          width: 120,
           height: 45,
           borderRadius: 6,
           marginRight: 12,

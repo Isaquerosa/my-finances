@@ -13,7 +13,7 @@ export function Header() {
   return (
     <HeaderContainer>
       <View style={{ marginLeft: 38, marginTop: 32 }}>
-        <Text fontSize="md">My Finances</Text>
+        <Text fontSize="md">Minhas finanças</Text>
       </View>
       <ViewFlex mr={38} mt={36}>
         <TouchableOpacity onPress={handleSignOut}>

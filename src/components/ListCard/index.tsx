@@ -1,47 +1,75 @@
-import { ButtonDetails, Container, Icon, Name, Value } from './styles'
+import { Alert } from 'react-native'
+import firestore from '@react-native-firebase/firestore'
+import { Trash } from 'phosphor-react-native'
 import { ViewFlex } from '../ViewFlex'
-import { maskCurrency, maskDate } from '../../utils/masks'
-import { DotsThreeVertical } from 'phosphor-react-native'
+import { formatBrlCoin, maskDate } from '../../utils/masks'
+import { CategoryColors } from '../../utils/categoryColor'
+
+import Swipeable from 'react-native-gesture-handler/Swipeable'
+import { Tag } from '../ExpensesCardByCategory/styles'
+import { Container, DeleteContainer, Name, Value } from './styles'
 
 interface ListCardProps {
+  id: string
   desciption: string
+  category: string
   value: string
   date: any
   typeTransaction: string
-  onShowDetails?: () => void
 }
 
 export function ListCard({
+  id,
   desciption,
+  category,
   value,
   date,
   typeTransaction,
-  onShowDetails,
 }: ListCardProps) {
-  console.log(date)
+  function handleRemoveTransaction() {
+    firestore()
+      .collection('transactions')
+      .doc(id)
+      .delete()
+      .then(() => {
+        Alert.alert('Transação deletada com sucesso')
+      })
+      .catch((error) => console.log(error))
+  }
+
+  function handleSwipeToRightActions() {
+    return (
+      <DeleteContainer onPress={handleRemoveTransaction}>
+        <Trash size={24} color="#fff" />
+      </DeleteContainer>
+    )
+  }
   return (
     <Container>
-      <ViewFlex flexDirection="column" w="62%">
-        <ViewFlex flexDirection="row">
-          <Icon name="article" />
-          <Name>{desciption}</Name>
+      <Swipeable
+        overshootRight={false}
+        renderRightActions={handleSwipeToRightActions}
+        containerStyle={{
+          width: '100%',
+          backgroundColor: '#323238',
+          borderRadius: 6,
+          height: 72,
+        }}
+      >
+        <ViewFlex flexDirection="row" w="100%">
+          <Tag color={CategoryColors(category)} />
+          <ViewFlex flexDirection="column" w="70%">
+            <Name>{desciption}</Name>
+            <Value typeTransaction={typeTransaction}>
+              {typeTransaction === 'expense' ? '- ' : '+ '}
+              {formatBrlCoin(value)}
+            </Value>
+          </ViewFlex>
+          <ViewFlex mt={20} ml={-18}>
+            <Name>{maskDate(date)}</Name>
+          </ViewFlex>
         </ViewFlex>
-
-        <ViewFlex flexDirection="row" mt={12}>
-          <Icon name="attach-money" />
-          <Value typeTransaction={typeTransaction}>
-            {typeTransaction === 'expense' ? '- ' : '+ '}
-            {maskCurrency(value)}
-          </Value>
-        </ViewFlex>
-      </ViewFlex>
-      <ViewFlex flexDirection="row" w="25%">
-        <Name>{maskDate(date)}</Name>
-      </ViewFlex>
-
-      <ButtonDetails onPress={onShowDetails}>
-        <DotsThreeVertical color="#fff" size={32} />
-      </ButtonDetails>
+      </Swipeable>
     </Container>
   )
 }

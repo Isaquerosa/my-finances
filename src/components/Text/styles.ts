@@ -7,6 +7,8 @@ const COLORS = {
   darkGray: theme.COLORS.GRAY_600,
   white: theme.COLORS.WHITE,
   blue: theme.COLORS.BLUE,
+  red: theme.COLORS.RED,
+  green: theme.COLORS.GREEN,
 }
 
 export interface TextContainerProps {
