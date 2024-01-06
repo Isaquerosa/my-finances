@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native'
+import { Text, TouchableOpacity, FlatList } from 'react-native'
 
 import firestore from '@react-native-firebase/firestore'
 
@@ -11,17 +11,17 @@ import { MonthCard } from '../../components/MonthCard'
 import { useAuth } from '../../hooks/useAuth'
 import { Container } from './styles'
 import { formatBrlCoin, removeMaskCurrency } from '../../utils/masks'
-import { TransactionsDetailsModal } from './components/TransactionsDetailsModal'
 
-interface ExpenseProps {
+export interface ExpenseProps {
   id: string
   description: string
+  category: string
   type_transaction: string
   value: string
   created_at: string
 }
 
-const MONTHS_ARRAY = [
+export const MONTHS_ARRAY = [
   { key: '1', label: 'Janeiro' },
   { key: '2', label: 'Fevereiro' },
   { key: '3', label: 'Março' },
@@ -42,10 +42,7 @@ export function Home() {
   const [monthSelected, setMonthSelected] = useState<string>(
     actualMonth.toString(),
   )
-  const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false)
   const [transactionsData, setTransactionsData] = useState<ExpenseProps[]>([])
-  const [transactionsDetails, setTransactionsDetails] = useState<ExpenseProps>()
-  console.log('Console do mês do atual', actualMonth.toString())
   const { user } = useAuth()
   const flatListRef = useRef<FlatList>(null)
 
@@ -66,15 +63,6 @@ export function Home() {
       total: 0,
     },
   )
-
-  function handleCloseDetailsModal() {
-    setIsOpenDetailsModal(false)
-  }
-
-  function handleOpenDetailsModal(item: ExpenseProps) {
-    setIsOpenDetailsModal(true)
-    setTransactionsDetails(item)
-  }
 
   useEffect(() => {
     setIsLoadingData(true)
@@ -112,11 +100,10 @@ export function Home() {
       <ViewFlex
         flexDirection="column"
         w="100%"
-        mb={32}
+        mb={24}
         items="center"
         justify="space-between"
       >
-        <Text style={styles.text}>Home page</Text>
         <FlatList
           ref={flatListRef}
           data={MONTHS_ARRAY}
@@ -140,11 +127,12 @@ export function Home() {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <ListCard
+              id={item.id}
               desciption={item.description}
+              category={item.category}
               value={item.value}
               date={item.created_at}
               typeTransaction={item.type_transaction}
-              onShowDetails={() => handleOpenDetailsModal(item)}
             />
           )}
           ListEmptyComponent={() => (
@@ -157,7 +145,7 @@ export function Home() {
 
       <ViewFlex
         flexDirection="row"
-        mt={24}
+        mt={12}
         items="center"
         justify="center"
         w="100%"
@@ -170,7 +158,7 @@ export function Home() {
             borderRadius: 6,
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#323238',
+            backgroundColor: '#00875F',
           }}
         >
           <Text style={{ color: '#fff' }}>
@@ -200,7 +188,7 @@ export function Home() {
             borderRadius: 6,
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#00875F',
+            backgroundColor: '#323238',
           }}
         >
           <Text style={{ color: '#fff' }}>
@@ -209,28 +197,6 @@ export function Home() {
           <Text style={{ color: '#fff' }}>Saldo</Text>
         </TouchableOpacity>
       </ViewFlex>
-      <TransactionsDetailsModal
-        isOpen={isOpenDetailsModal}
-        id={transactionsDetails?.id}
-        onClose={handleCloseDetailsModal}
-      />
     </Container>
   )
 }
-
-const styles = StyleSheet.create({
-  input: {
-    backgroundColor: '#fff',
-    width: '100%',
-    height: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#8D8D99',
-    marginBottom: 18,
-    padding: 12,
-  },
-  text: {
-    color: '#fff',
-    marginBottom: 18,
-  },
-})

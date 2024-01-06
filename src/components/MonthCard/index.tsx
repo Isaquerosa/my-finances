@@ -12,17 +12,17 @@ export function MonthCard({ isActive, name, ...props }: MonthCardProps) {
     <ViewFlex flexDirection="row">
       <TouchableOpacity
         style={{
-          width: 80,
+          width: 120,
           height: 45,
           borderRadius: 6,
           marginRight: 12,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: isActive ? '#66bce8' : '#8D8D99',
+          backgroundColor: isActive ? '#C4C4CC' : '#323238',
         }}
         {...props}
       >
-        <Text style={{ color: '#fff' }}>{name}</Text>
+        <Text style={{ color: isActive ? '#323238' : '#fff' }}>{name}</Text>
       </TouchableOpacity>
     </ViewFlex>
   )

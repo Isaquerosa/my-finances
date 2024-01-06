@@ -12,6 +12,7 @@ import { removeMaskCurrency } from '../../utils/masks'
 import { CalendarModal } from '../../components/CalendarModal'
 import { Calendar } from 'phosphor-react-native'
 import { useCalendarModal } from '../../contexts/CalendarModal-context'
+import { CategoryPicker, CategoryProps } from '../../components/CategoryPicker'
 
 export function TransactionRegister() {
   const [description, setDescription] = useState('')
@@ -20,7 +21,8 @@ export function TransactionRegister() {
   const [isLoading, setIsLoading] = useState(false)
   const [isOpenCalendarModal, setIsOpenCalendarModal] = useState(false)
   const { user } = useAuth()
-  const { selectedDate } = useCalendarModal()
+  const { selectedDate, setSelectedDate } = useCalendarModal()
+  const [category, setCategory] = useState<CategoryProps>('Casa')
 
   function handleCloseCalendarModal() {
     setIsOpenCalendarModal(false)
@@ -34,6 +36,7 @@ export function TransactionRegister() {
         user_id: user?.uid,
         type_transaction: typeTransaction,
         description,
+        category,
         value: removeMaskCurrency(value),
         created_at: new Date(selectedDate),
       })
@@ -41,6 +44,7 @@ export function TransactionRegister() {
         Alert.alert('Transação cadastrada com sucesso')
         setDescription('')
         setValue('')
+        setSelectedDate('')
       })
       .catch((error) => console.log(error))
       .finally(() => setIsLoading(false))
@@ -54,9 +58,9 @@ export function TransactionRegister() {
             justifyContent: 'center',
           }}
         >
-          <Text fontSize="md">Cadastro de transações</Text>
-
-          <View style={{ marginTop: 42, width: '100%' }}>
+          <View
+            style={{ flex: 1, marginTop: 20, marginBottom: 12, width: '100%' }}
+          >
             <Input
               id="description"
               label="Descrição"
@@ -65,13 +69,26 @@ export function TransactionRegister() {
             />
           </View>
 
-          <View style={{ marginTop: 28, width: '100%' }}>
+          <View
+            style={{ flex: 1, marginTop: 20, marginBottom: 8, width: '100%' }}
+          >
             <Input
               id="value"
               label="Valor"
               mask="currency"
               value={value}
               inputMaskChange={(text: string) => setValue(text)}
+            />
+          </View>
+
+          <View style={{ marginTop: 28, width: '100%' }}>
+            <View style={{ marginBottom: 8 }}>
+              <Text fontSize="sm">Categoria</Text>
+            </View>
+
+            <CategoryPicker
+              selectedValue={category}
+              onValueChange={setCategory}
             />
           </View>
 
@@ -112,7 +129,8 @@ export function TransactionRegister() {
               <Text>Receita</Text>
             </TouchableOpacity>
           </ViewFlex>
-          <ViewFlex mt={42} w="100%" items="center">
+
+          <ViewFlex mt={28} w="100%" items="center">
             <TouchableOpacity
               onPress={() => setIsOpenCalendarModal(true)}
               style={{
@@ -130,7 +148,7 @@ export function TransactionRegister() {
               <Text>Selecionar data</Text>
             </TouchableOpacity>
           </ViewFlex>
-          <View style={{ width: '100%', marginBottom: 42, marginTop: 42 }}>
+          <View style={{ width: '100%', marginBottom: 28, marginTop: 28 }}>
             <Button
               title="Cadastrar"
               size="lg"
